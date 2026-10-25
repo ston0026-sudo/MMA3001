@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+
+# Dataset images and labels
+data/*
+!data/data.yaml
+!data/
+
+# Trained model weights
+*.pt
+*.onnx
+*.engine
+
+# Training runs and generated predictions
+runs/
+outputs/train_*/
+outputs/predictions_*/
+
+# Temporary and cache files
+*.cache
+.ipynb_checkpoints/
