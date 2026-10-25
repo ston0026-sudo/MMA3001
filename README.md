@@ -14,23 +14,18 @@ Important scope limitation: this is a prototype for detecting annotated visual c
 2. Dataset
 The exported dataset contains three splits:
 
-Split	Images	Labelled objects
-Training	3,349	2,923
-Validation	120	121
-Test	80	79
+Split	    Images	   Labelled objects
+Training	3,349	   2,923
+Validation	120	       121
+Test	    80	       79
 Images have dimensions of 720 × 540 pixels. The model is trained and evaluated with an input size of 640 pixels.
 
 The five annotation classes are:
-
-loose-meat
-
-packaging-error
-
-twisted-meat
-
-unsealed
-
-wrinkle
+- loose-meat
+- packaging-error
+- twisted-meat
+- unsealed
+- wrinkle
 
 The dataset is imbalanced. The wrinkle class has only 18 training objects and no labelled examples in the validation or test splits. Therefore, its generalisation performance cannot be evaluated from the supplied split.
 
@@ -54,9 +49,10 @@ pork-rasher-defect-detection/
     ├── test_evaluation_25_epochs/
     ├── predictions_25_epochs/
     └── performance_profile.json
+   
 Generated model weights and the dataset itself may be stored separately because of their size. The paths above describe the intended project organisation; update them if your submitted repository uses a different layout.
 
-4. Methods and experiments
+5. Methods and experiments
 The project uses Ultralytics YOLOv8n, a compact single-stage object detector.
 
 Two fine-tuning experiments were conducted using pretrained YOLOv8n weights:
@@ -72,11 +68,12 @@ A separate diagnostic evaluation ran the generic pretrained COCO model without f
 The validation split was used to monitor model performance. The test split was evaluated during development, so it should not be described as having been used only once.
 
 5. Main test results
-Metric	5-epoch model	25-epoch model
-Precision	55.42%	63.72%
-Recall	49.48%	62.18%
-mAP@0.5	34.35%	60.27%
-mAP@0.5:0.95	19.11%	33.60%
+Metric	    5-epoch model	25-epoch model
+Precision	    55.42%	    63.72%
+Recall	        49.48%	    62.18%
+mAP@0.5	        34.35%	    60.27%
+mAP@0.5:0.95	19.11%	    33.60%
+
 The 25-epoch experiment achieved higher values on all four reported aggregate metrics. Its test mAP@0.5 was 25.92 percentage points higher than the 5-epoch model's result.
 
 These results indicate improved performance on this test split, not proven performance on all production environments. The dataset is small in validation and test size, has substantial class imbalance, and does not provide held-out examples for the wrinkle class.
@@ -104,16 +101,16 @@ Inspect the dataset:
 python src/inspect_dataset.py --data data/data.yaml
 Train a model:
 
-python src/train.py --data data/data.yaml --model yolov8n.pt --epochs 25 --imgsz 640
+python src/train.py --data data/data.yaml --model yolov8n.pt --epochs 25 --imgsz 640 --batch 16
 Evaluate a model on the test split:
-
 python src/evaluate.py --data data/data.yaml --weights path/to/best.pt --name final
+
 Generate predictions:
-
 python src/predict.py --weights path/to/best.pt --source data/test/images
-Profile inference:
 
+Profile inference:
 python src/profile_inference.py --weights path/to/best.pt --data data/data.yaml --imgsz 640 --max-images 80 --warmup 5
+
 Use the actual weight-file path produced by your training run. Dataset paths in data/data.yaml must resolve correctly from the dataset root.
 
 8. Limitations and future work
